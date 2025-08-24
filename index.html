@@ -1,0 +1,366 @@
+<title>Тест</title>
+<div style="margin-top: 105px; margin-left: 484px;">
+	<p id="question"></p>
+	<div id="answers"></div>
+	<div id="progress-background">
+		<div id="progress"></div>
+	</div>
+	<span id="question-counter">
+		<span id="question-number"></span> из 10
+	</span>
+	<button id="next" disabled>Дальше</button>
+</div>
+<div id="result">
+	<div id="result-content">
+		<p>Тестирование завершено</p>
+		<p>
+			<span id="correct"></span> / <span>10</span>
+		</p>
+		<div id="result-footer">
+			<div class="button">На главную</div>
+			<div class="button primary" onclick="window.location.reload()">Заново</div>
+		</div>
+	</div>
+</div>
+<style>
+body {
+	font-family: sans-serif;
+}
+#question {
+	margin-bottom: 29px;
+}
+.answer {
+	position: relative;
+	width: 874px;
+	margin: 12px 0;
+	padding: 14px;
+	padding-left: 46px;
+	border: 1px solid #ddd;
+	border-radius: 16px;
+	cursor: pointer;
+}
+.answer:hover {
+	background-color: #fafafa;
+}
+.answer::before {
+	position: absolute;
+	top: 50%;
+	left: 13px;
+	transform: translateY(-50%);
+	content: '';
+	width: 18px;
+	height: 18px;
+	border: 1px solid #ddd;
+	border-radius: 50%;
+}
+[checked] {
+	outline: 2px solid #07f;
+	outline-offset: -2px;
+}
+[checked]::before  {
+	outline: 6px solid #07f;
+	outline-offset: -6px;
+}
+#progress-background {
+	position: absolute;
+	left: 0;
+	bottom: 86px;
+	width: 100%;
+	height: 8px;
+	background-color: #eee;
+}
+#progress {
+	height: 8px;
+	background-color: #07f;
+	transition: 0.3s;
+}
+#question-counter {
+	position: absolute;
+	left: 250px;
+	bottom: 35px;
+	color: #aaa;
+}
+button {
+	position: absolute;
+	right: 252px;
+	bottom: 19px;
+	padding: 15px 17px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: 600;
+	background-color: #07f;
+	border: 0;
+	border-radius: 12px;
+	cursor: pointer;
+}
+button:hover {
+	background-color: #06f;
+}
+button:active {
+	background-color: #05f;
+}
+button:disabled {
+	color: #bbb;
+	background-color: #eee;
+	cursor: default;
+}
+#result {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background-color: #0008;
+}
+#result-content {
+	width: 580px;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 24px;
+	user-select: none;
+}
+#result-content p {
+	text-align: center;
+	font-size: 24px;
+	font-weight: 600;
+}
+#result-content p:nth-child(2) {
+	font-size: 32px;
+}
+#result-footer {
+	display: flex;
+	justify-content: end;
+	gap: 8px;
+}
+.button {
+	padding: 14px 28px;
+	color: #07f;
+	border-radius: 12px;
+	cursor: pointer;
+}
+.button:hover {
+	background-color: #07f1;
+}
+.button:active {
+	background-color: #07f2;
+}
+.button.primary {
+	color: #fff;
+	background-color: #07f;
+}
+.button.primary:hover {
+	background-color: #06f;
+}
+.button.primary:active {
+	background-color: #05f;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+number = sessionStorage.getItem('number')
+
+$('#question-number').text(+number + 1)
+$('#progress').width(number / 10 * 100 + '%')
+
+next.onclick = () => {
+	if (correctAnswer == $('[checked]').text()) {
+		sessionStorage.setItem('correct', +sessionStorage.getItem('correct') + 1)
+	}
+
+	$('button').attr('disabled', true)
+
+	sessionStorage.setItem(sessionStorage.getItem('questionNumber'), true)
+	sessionStorage.setItem('number', +sessionStorage.getItem('number') + 1)
+
+	$('#progress').width(sessionStorage.getItem('number') / 10 * 100 + '%')
+
+	if (sessionStorage.getItem('number') == 9) {
+		$('#next').text('Завершить')
+	}
+
+	if (sessionStorage.getItem('number') == 10) {
+		progress.ontransitionend = () => {
+			correctAnswers = sessionStorage.getItem('correct')
+			p = $('#result p:nth-child(2)')
+
+			if (correctAnswers >= 8) {
+				p.css('color', '#0d7')
+			} else if (correctAnswers >= 5) {
+				p.css('color', '#fd0')
+			} else {
+				p.css('color', '#f00')
+			}
+
+			$('#correct').text(correctAnswers || 0)
+			sessionStorage.clear()
+			result.style.display = 'flex'
+		}
+
+		return
+	}
+
+	$('#question-number').text(+sessionStorage.getItem('number') + 1)
+
+	while (sessionStorage.getItem(questionNumber)) {
+		questionNumber = Math.floor(Math.random() * questions.length)
+	}
+
+	$('#answers').empty()
+	nextQuestion()
+}
+
+questions = [
+	[
+		'Вопрос 1',
+		{
+			answers: [
+				'Ответ 1-1',
+				'Ответ 1-2',
+				'Ответ 1-3',
+				'Ответ 1-4',
+				'Ответ 1-5'
+			]
+		}
+	],
+	[
+		'Вопрос 2',
+		{
+			answers: [
+				'Ответ 2-1',
+				'Ответ 2-2',
+				'Ответ 2-3',
+				'Ответ 2-4',
+				'Ответ 2-5'
+			]
+		}
+	],
+	[
+		'Вопрос 3',
+		{
+			answers: [
+				'Ответ 3-1',
+				'Ответ 3-2',
+				'Ответ 3-3',
+				'Ответ 3-4',
+				'Ответ 3-5'
+			]
+		}
+	],
+	[
+		'Вопрос 4',
+		{
+			answers: [
+				'Ответ 4-1',
+				'Ответ 4-2',
+				'Ответ 4-3',
+				'Ответ 4-4',
+				'Ответ 4-5'
+			]
+		}
+	],
+	[
+		'Вопрос 5',
+		{
+			answers: [
+				'Ответ 5-1',
+				'Ответ 5-2',
+				'Ответ 5-3',
+				'Ответ 5-4',
+				'Ответ 5-5'
+			]
+		}
+	],
+	[
+		'Вопрос 6',
+		{
+			answers: [
+				'Ответ 6-1',
+				'Ответ 6-2',
+				'Ответ 6-3',
+				'Ответ 6-4',
+				'Ответ 6-5'
+			]
+		}
+	],
+	[
+		'Вопрос 7',
+		{
+			answers: [
+				'Ответ 7-1',
+				'Ответ 7-2',
+				'Ответ 7-3',
+				'Ответ 7-4',
+				'Ответ 7-5'
+			]
+		}
+	],
+	[
+		'Вопрос 8',
+		{
+			answers: [
+				'Ответ 8-1',
+				'Ответ 8-2',
+				'Ответ 8-3',
+				'Ответ 8-4',
+				'Ответ 8-5'
+			]
+		}
+	],
+	[
+		'Вопрос 9',
+		{
+			answers: [
+				'Ответ 9-1',
+				'Ответ 9-2',
+				'Ответ 9-3',
+				'Ответ 9-4',
+				'Ответ 9-5'
+			]
+		}
+	],
+	[
+		'Вопрос 10',
+		{
+			answers: [
+				'Ответ 10-1',
+				'Ответ 10-2',
+				'Ответ 10-3',
+				'Ответ 10-4',
+				'Ответ 10-5'
+			]
+		}
+	]
+]
+
+if (sessionStorage.getItem('questionNumber')) {
+	questionNumber = sessionStorage.getItem('questionNumber')
+} else {
+	questionNumber = Math.floor(Math.random() * questions.length)
+}
+
+function nextQuestion() {
+	sessionStorage.setItem('questionNumber', questionNumber)
+	$('#question').text(questions[questionNumber][0])
+
+	correctAnswer = questions[questionNumber][1].answers[0]
+
+	questions[questionNumber][1].answers.sort(() => Math.random() - 0.5)
+
+	for (answer of questions[questionNumber][1].answers) {
+		let p = $(`<p class="answer">${answer}</p>`)
+		$('#answers').append(p)
+
+		p.on('click', () => {
+			$('[checked]').attr('checked', false)
+			p.attr('checked', true)
+
+			$('button').attr('disabled', false)
+		})
+	}
+}
+
+nextQuestion()
+</script>
