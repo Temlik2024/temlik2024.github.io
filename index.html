@@ -1,14 +1,22 @@
 <title>Тест</title>
-<div style="margin-top: 105px; margin-left: 484px;">
-	<p id="question"></p>
-	<div id="answers"></div>
+<div class="container">
+	<header>
+		<span id="title">HTML</span>
+		<button>Завершить</button>
+	</header>
+	<main>
+		<p id="question"></p>
+		<div id="answers"></div>
+	</main>
 	<div id="progress-background">
 		<div id="progress"></div>
 	</div>
-	<span id="question-counter">
-		<span id="question-number"></span> из 10
-	</span>
-	<button id="next" disabled>Дальше</button>
+	<footer>
+		<span id="question-counter">
+			<span id="question-number"></span> из 10
+		</span>
+		<button class="primary" id="next" disabled>Дальше</button>
+	</footer>
 </div>
 <div id="result">
 	<div id="result-content">
@@ -17,21 +25,46 @@
 			<span id="correct"></span> / <span>10</span>
 		</p>
 		<div id="result-footer">
-			<div class="button">На главную</div>
-			<div class="button primary" onclick="window.location.reload()">Заново</div>
+			<button>На главную</button>
+			<button class="primary" onclick="window.location.reload()">Заново</button>
 		</div>
 	</div>
 </div>
 <style>
 body {
+	margin: 0;
 	font-family: sans-serif;
+	user-select: none;
+}
+.container {
+	display: flex;
+	flex-direction: column;
+	max-width: 1416px;
+	height: 100%;
+	margin: auto;
+	padding: 0 16px;
+}
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 26px 0;
+}
+#title {
+	color: #aaa;
+	font-size: 15px;
+}
+main {
+	width: 100%;
+	max-width: 936px;
+	margin: 0 auto;
+	user-select: all;
 }
 #question {
 	margin-bottom: 29px;
 }
 .answer {
 	position: relative;
-	width: 874px;
 	margin: 12px 0;
 	padding: 14px;
 	padding-left: 46px;
@@ -74,35 +107,45 @@ body {
 	background-color: #07f;
 	transition: 0.3s;
 }
+footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: auto;
+	padding: 20px 0;
+}
 #question-counter {
-	position: absolute;
-	left: 250px;
-	bottom: 35px;
 	color: #aaa;
 }
 button {
-	position: absolute;
-	right: 252px;
-	bottom: 19px;
-	padding: 15px 17px;
-	color: #fff;
+	padding: 14px 28px;
+	color: #07f;
 	font-size: 16px;
-	font-weight: 600;
-	background-color: #07f;
+	background-color: #fff;
 	border: 0;
 	border-radius: 12px;
 	cursor: pointer;
 }
 button:hover {
-	background-color: #06f;
+	background-color: #07f1;
 }
 button:active {
+	background-color: #07f2;
+}
+button.primary {
+	color: #fff;
+	background-color: #07f;
+}
+button.primary:hover {
+	background-color: #06f;
+}
+button.primary:active {
 	background-color: #05f;
 }
 button:disabled {
 	color: #bbb;
 	background-color: #eee;
-	cursor: default;
+	pointer-events: none;
 }
 #result {
 	position: fixed;
@@ -120,7 +163,6 @@ button:disabled {
 	padding: 20px;
 	background-color: #fff;
 	border-radius: 24px;
-	user-select: none;
 }
 #result-content p {
 	text-align: center;
@@ -135,28 +177,6 @@ button:disabled {
 	justify-content: end;
 	gap: 8px;
 }
-.button {
-	padding: 14px 28px;
-	color: #07f;
-	border-radius: 12px;
-	cursor: pointer;
-}
-.button:hover {
-	background-color: #07f1;
-}
-.button:active {
-	background-color: #07f2;
-}
-.button.primary {
-	color: #fff;
-	background-color: #07f;
-}
-.button.primary:hover {
-	background-color: #06f;
-}
-.button.primary:active {
-	background-color: #05f;
-}
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
@@ -170,7 +190,7 @@ next.onclick = () => {
 		sessionStorage.setItem('correct', +sessionStorage.getItem('correct') + 1)
 	}
 
-	$('button').attr('disabled', true)
+	next.disabled = true
 
 	sessionStorage.setItem(sessionStorage.getItem('questionNumber'), true)
 	sessionStorage.setItem('number', +sessionStorage.getItem('number') + 1)
@@ -357,7 +377,7 @@ function nextQuestion() {
 			$('[checked]').attr('checked', false)
 			p.attr('checked', true)
 
-			$('button').attr('disabled', false)
+			next.disabled = false
 		})
 	}
 }
